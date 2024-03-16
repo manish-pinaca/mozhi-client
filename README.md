@@ -1,9 +1,6 @@
 
 # Mozhi Client
 
-
-
-
 ## Installation
 
 Clone the mozhi client
@@ -17,7 +14,7 @@ Navigate to project
 ```bash
   cd mozhi-client
 ```
-    
+
 Install the required depenpendencies
 
 ```bash

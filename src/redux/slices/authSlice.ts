@@ -74,6 +74,90 @@ export const login = createAsyncThunk(
   }
 );
 
+export const forgotPassword = createAsyncThunk(
+  "api/forgotPassword",
+  async (payload: ForgotPasswordParams) => {
+    try {
+      const formPayload = new FormData();
+      formPayload.set("identifier", payload.email);
+
+      const { data } = await axios.post(
+        "http://localhost:5000/forget_password",
+        formPayload,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      if (data.error) {
+        throw new Error(data.error);
+      }
+      return data;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      throw new Error(error.message || "Something went wrong!");
+    }
+  }
+);
+
+export const verifyOTP = createAsyncThunk(
+  "api/verifyOTP",
+  async (payload: VerifyOTPParams) => {
+    try {
+      const formPayload = new FormData();
+      formPayload.set("email", payload.email);
+      formPayload.set("otp", payload.otp);
+
+      const { data } = await axios.post(
+        "http://localhost:5000/verify_otp",
+        formPayload,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      if (data.error) {
+        throw new Error(data.error);
+      }
+      return data;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      throw new Error(error.message || "Something went wrong!");
+    }
+  }
+);
+
+export const resetPassword = createAsyncThunk(
+  "api/resetPassword",
+  async (payload: ResetPasswordParams) => {
+    try {
+      const formPayload = new FormData();
+      formPayload.set("identifier", payload.email);
+      formPayload.set("otp", payload.otp);
+      formPayload.set("new_password", payload.password);
+
+      const { data } = await axios.post(
+        "http://localhost:5000/reset_password",
+        formPayload,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      if (data.error) {
+        throw new Error(data.error);
+      }
+      return data;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error:any) {
+      throw new Error(error.message || "Something went wrong!");
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auhtSlice",
   initialState,
@@ -113,6 +197,42 @@ const authSlice = createSlice({
       state.error = null;
     });
     builder.addCase(login.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.error.message!;
+    });
+    builder.addCase(forgotPassword.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(forgotPassword.fulfilled, (state) => {
+      state.isLoading = false;
+      state.error = null;
+    });
+    builder.addCase(forgotPassword.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.error.message!;
+    });
+    builder.addCase(verifyOTP.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(verifyOTP.fulfilled, (state) => {
+      state.isLoading = false;
+      state.error = null;
+    });
+    builder.addCase(verifyOTP.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.error.message!;
+    });
+    builder.addCase(resetPassword.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(resetPassword.fulfilled, (state) => {
+      state.isLoading = false;
+      state.error = null;
+    });
+    builder.addCase(resetPassword.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.error.message!;
     });

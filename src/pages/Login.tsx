@@ -3,15 +3,15 @@ import { AppDispatch, RootState } from "@/redux/store";
 import { useCallback, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { IoMdInformationCircle } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { login } from "@/redux/slices/authSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { Checkbox } from "@/components/ui/checkbox";
 
 interface IError {
   username?: string;
@@ -162,9 +162,11 @@ const Login = () => {
             </label>
           </div>
           <div className="flex items-center space-x-2">
-            <p className="text-sm font-medium leading-none cursor-pointer hover:underline">
-              Forget Password ?
-            </p>
+            <Link to="/forgotPassword">
+              <p className="text-sm font-medium leading-none cursor-pointer hover:underline">
+                Forget Password ?
+              </p>
+            </Link>
           </div>
         </div>
         <div className="w-full flex justify-center mt-[5%]">
